@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using API.Models;
 using API.Models.Common;
 using API.Services;
+using API.Models.Responses;
 
 namespace API.Controllers
 {
@@ -32,20 +33,20 @@ namespace API.Controllers
 
                 if (!cards.Any())
                 {
-                    return BadRequest(new { message = "No credit card recommendations found" });
+                    return BadRequest(new ErrorResponse { Message = "No credit card recommendations found" });
                 }
 
                 // Return results with source indicator
-                return Ok(new
+                return Ok(new CreditCardResponse
                 {
-                    message = fromCache ? "Retrieved from cache" : "Fetched from APIs",
-                    cards
+                    Message = fromCache ? "Retrieved from cache" : "Fetched from APIs",
+                    Cards = cards
                 });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error processing credit card request");
-                return StatusCode(500, new { message = "Internal server error" });
+                return StatusCode(500, new ErrorResponse { Message = "Internal server error" });
             }
         }
     }

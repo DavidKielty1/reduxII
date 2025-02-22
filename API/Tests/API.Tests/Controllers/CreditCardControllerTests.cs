@@ -5,6 +5,7 @@ using API.Controllers;
 using API.Models;
 using API.Models.Common;
 using API.Services;
+using API.Models.Responses;
 using Xunit;
 
 namespace API.Tests.Controllers
@@ -41,11 +42,11 @@ namespace API.Tests.Controllers
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
-            var response = Assert.IsType<Anonymous<string, List<CreditCardRecommendation>>>(okResult.Value);
-            Assert.Equal("Fetched from APIs", response.message);
-            Assert.NotNull(response.cards);
-            Assert.Single(response.cards);
-            Assert.Equal("Test Card", response.cards[0].Name);
+            var response = Assert.IsType<CreditCardResponse>(okResult.Value);
+            Assert.Equal("Fetched from APIs", response.Message);
+            Assert.NotNull(response.Cards);
+            Assert.Single(response.Cards);
+            Assert.Equal("Test Card", response.Cards[0].Name);
         }
 
         [Fact]
@@ -63,8 +64,8 @@ namespace API.Tests.Controllers
 
             // Assert
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-            var response = Assert.IsType<Anonymous<string>>(badRequestResult.Value);
-            Assert.Equal("No credit card recommendations found", response.message);
+            var response = Assert.IsType<ErrorResponse>(badRequestResult.Value);
+            Assert.Equal("No credit card recommendations found", response.Message);
         }
 
         [Fact]
@@ -83,8 +84,8 @@ namespace API.Tests.Controllers
             // Assert
             var statusCodeResult = Assert.IsType<ObjectResult>(result);
             Assert.Equal(500, statusCodeResult.StatusCode);
-            var response = Assert.IsType<Anonymous<string>>(statusCodeResult.Value);
-            Assert.Equal("Internal server error", response.message);
+            var response = Assert.IsType<ErrorResponse>(statusCodeResult.Value);
+            Assert.Equal("Internal server error", response.Message);
 
             _loggerMock.Verify(
                 x => x.Log(
@@ -94,18 +95,6 @@ namespace API.Tests.Controllers
                     It.IsAny<Exception>(),
                     It.Is<Func<It.IsAnyType, Exception?, string>>((v, t) => true)),
                 Times.Once);
-        }
-
-        // Helper class to handle anonymous types in tests
-        private class Anonymous<T>
-        {
-            public T? message { get; set; }
-        }
-
-        private class Anonymous<T1, T2>
-        {
-            public T1? message { get; set; }
-            public T2? cards { get; set; }
         }
     }
 }
