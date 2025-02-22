@@ -108,7 +108,7 @@ public class ApiServiceTests
     public async Task GetCSCards_ThrowsWhenEndpointNotConfigured()
     {
         // Arrange
-        _mockConfig.Setup(x => x["CSCARDS_ENDPOINT"]).Returns((string)null);
+        _mockConfig.Setup(x => x["CSCARDS_ENDPOINT"]).Returns((string?)null);
         var request = new CSCardsRequest { Name = "Test", CreditScore = 700 };
 
         // Act & Assert

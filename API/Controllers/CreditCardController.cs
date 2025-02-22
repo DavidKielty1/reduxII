@@ -29,28 +29,11 @@ namespace API.Controllers
         {
             try
             {
-                // Add validation
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest(new ErrorResponse { Message = "Validation failed" });
+                    return BadRequest(new ErrorResponse { Message = ModelState.Values.First().Errors.First().ErrorMessage });
                 }
 
-                if (string.IsNullOrEmpty(request.Name))
-                {
-                    return BadRequest(new ErrorResponse { Message = "Name is required" });
-                }
-
-                if (request.Score < 0)
-                {
-                    return BadRequest(new ErrorResponse { Message = "Score must be positive" });
-                }
-
-                if (request.Salary < 0)
-                {
-                    return BadRequest(new ErrorResponse { Message = "Salary must be positive" });
-                }
-
-                // Get recommendations (from cache or fresh from providers)
                 var (cards, fromCache) = await _service.GetRecommendations(request);
 
                 if (!cards.Any())
@@ -58,7 +41,6 @@ namespace API.Controllers
                     return BadRequest(new ErrorResponse { Message = "No credit card recommendations found" });
                 }
 
-                // Return results with source indicator
                 return Ok(new CreditCardResponse
                 {
                     Message = fromCache ? "Retrieved from cache" : "Fetched from APIs",
