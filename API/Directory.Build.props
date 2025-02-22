@@ -1,5 +1,11 @@
 <Project>
   <PropertyGroup>
     <DefaultItemExcludes>$(DefaultItemExcludes);Tests/**</DefaultItemExcludes>
+    <CoverletOutputFormat>cobertura</CoverletOutputFormat>
+    <ThresholdType>line,branch,method</ThresholdType>
+    <ThresholdStat>total</ThresholdStat>
+    <MinimumLineThreshold>80</MinimumLineThreshold>
+    <MinimumBranchThreshold>80</MinimumBranchThreshold>
+    <MinimumMethodThreshold>80</MinimumMethodThreshold>
   </PropertyGroup>
 </Project> 
