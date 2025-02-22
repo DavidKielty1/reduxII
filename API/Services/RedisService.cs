@@ -44,9 +44,20 @@ public class RedisService : IRedisService
     public async Task<List<CreditCardRecommendation>?> GetRequestResults(string name, int score, int salary)
     {
         var value = await _db.StringGetAsync(GetKey(name, score, salary));
-        return value.HasValue
-            ? JsonSerializer.Deserialize<List<CreditCardRecommendation>>(value!)
-            : null;
+        if (!value.HasValue)
+        {
+            return null;
+        }
+
+        try
+        {
+            return JsonSerializer.Deserialize<List<CreditCardRecommendation>>(value!);
+        }
+        catch (JsonException ex)
+        {
+            _logger.LogError(ex, "Deserialization failed for cache value");
+            return null;
+        }
     }
 
     // Generates consistent cache keys for credit card requests

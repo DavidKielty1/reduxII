@@ -30,7 +30,7 @@ public class CreditCardServiceTests
         var request = new CreditCardRequest { Name = "Test", Score = 700, Salary = 30000 };
         var cachedCards = new List<CreditCardRecommendation>
         {
-            new() { Name = "Cached Card", Provider = "Test", Apr = 15.0m, CardScore = 0.8m }
+            new() { Name = "Cached Card", Provider = "CSCards", Apr = 15.0m, CardScore = 8.0m }
         };
 
         _mockCache.Setup(x => x.GetRequestResults(request.Name, request.Score, request.Salary))
@@ -52,7 +52,7 @@ public class CreditCardServiceTests
         var request = new CreditCardRequest { Name = "Test", Score = 700, Salary = 30000 };
         var providerCards = new List<CreditCardRecommendation>
         {
-            new() { Name = "New Card", Provider = "Test", Apr = 15.0m, CardScore = 0.8m }
+            new() { Name = "New Card", Provider = "CSCards", Apr = 15.0m, CardScore = 8.0m }
         };
 
         _mockCache.Setup(x => x.GetRequestResults(request.Name, request.Score, request.Salary))

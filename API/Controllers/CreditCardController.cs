@@ -29,6 +29,27 @@ namespace API.Controllers
         {
             try
             {
+                // Add validation
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(new ErrorResponse { Message = "Validation failed" });
+                }
+
+                if (string.IsNullOrEmpty(request.Name))
+                {
+                    return BadRequest(new ErrorResponse { Message = "Name is required" });
+                }
+
+                if (request.Score < 0)
+                {
+                    return BadRequest(new ErrorResponse { Message = "Score must be positive" });
+                }
+
+                if (request.Salary < 0)
+                {
+                    return BadRequest(new ErrorResponse { Message = "Salary must be positive" });
+                }
+
                 // Get recommendations (from cache or fresh from providers)
                 var (cards, fromCache) = await _service.GetRecommendations(request);
 
@@ -43,6 +64,10 @@ namespace API.Controllers
                     Message = fromCache ? "Retrieved from cache" : "Fetched from APIs",
                     Cards = cards
                 });
+            }
+            catch (TimeoutException)
+            {
+                return StatusCode(503, new ErrorResponse { Message = "Service unavailable" });
             }
             catch (Exception ex)
             {
