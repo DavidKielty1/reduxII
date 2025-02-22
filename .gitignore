@@ -1,0 +1,70 @@
+# Visual Studio specific
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build outputs
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+*.cache
+*.log
+*.csproj.user
+
+# NuGet packages
+packages/
+*.nupkg
+project.lock.json
+project.assets.json
+*.nuspec
+
+# Terraform
+.terraform/
+terraform.tfstate*
+terraform.lock.hcl
+terraform-debug.log
+
+
+# AWS Lambda Deployments
+*.zip
+/API/LambdaZips/
+
+# Test files
+Tests/obj/
+Tests/bin/
+
+# Miscellaneous/
+*.tmp
+.DS_Store
+Thumbs.db
+
+# Ignore publish folder
+API/publish/
+
+## Redis
+redis.md
+
+## Deprecated Models
+/API/Models/
+
+bin/
+obj/
+redis/
+publish/
+
+# Ignore everything in terraform folder
+# terraform/*
+# terraform/
+# terraform
+# /terraform
+
+# But keep main.tf
+# !terraform/main.tf 
+
+redis/
+
+zip_lambdas.sh

@@ -1,0 +1,17 @@
+﻿{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "API": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "http://localhost:5000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "CSCARDS_ENDPOINT": "https://api.clearscore.com/api/global/backend-tech-test/v1/cards",
+        "SCOREDCARDS_ENDPOINT": "https://api.clearscore.com/api/global/backend-tech-test/v2/creditcards"
+      }
+    }
+  }
+}
