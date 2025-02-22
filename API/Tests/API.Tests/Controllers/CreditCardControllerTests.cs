@@ -110,7 +110,7 @@ namespace API.Tests.Controllers
             // Assert
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
             var response = Assert.IsType<ErrorResponse>(badRequestResult.Value);
-            Assert.Contains("validation", response.Message.ToLower());
+            Assert.Equal("Name is required", response.Message);
         }
 
         [Theory]
