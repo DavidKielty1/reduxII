@@ -1,12 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using API.Models;
 using API.Models.Common;
-using API.Models.CardProviders;
-using API.Services;
+using API.Services.Interfaces;
 
 namespace API.Services
 {
@@ -16,13 +10,13 @@ namespace API.Services
     /// </summary>
     public class CreditCardService : ICreditCardService
     {
-        private readonly RedisService _cache;
-        private readonly CardProviderService _cardProvider;
+        private readonly IRedisService _cache;
+        private readonly ICardProviderService _cardProvider;
         private readonly ILogger<CreditCardService> _logger;
 
         public CreditCardService(
-            RedisService cache,
-            CardProviderService cardProvider,
+            IRedisService cache,
+            ICardProviderService cardProvider,
             ILogger<CreditCardService> logger)
         {
             _cache = cache;

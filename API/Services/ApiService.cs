@@ -1,6 +1,6 @@
 using System.Text.Json;
 using API.Models.CardProviders;
-using Microsoft.Extensions.Configuration;
+using API.Services.Interfaces;
 
 namespace API.Services
 {
@@ -8,7 +8,7 @@ namespace API.Services
     /// Low-level HTTP client for credit card provider APIs.
     /// Handles raw HTTP communication and response deserialization.
     /// </summary>
-    public class ApiService
+    public class ApiService : IApiService
     {
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _configuration;

@@ -1,7 +1,7 @@
 using API.Models;
 using API.Models.Common;
 
-namespace API.Services
+namespace API.Services.Interfaces
 {
     public interface ICreditCardService
     {

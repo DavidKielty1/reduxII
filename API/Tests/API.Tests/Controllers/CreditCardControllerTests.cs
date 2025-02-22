@@ -4,9 +4,9 @@ using Moq;
 using API.Controllers;
 using API.Models;
 using API.Models.Common;
-using API.Services;
 using API.Models.Responses;
 using Xunit;
+using API.Services.Interfaces;
 
 namespace API.Tests.Controllers
 {

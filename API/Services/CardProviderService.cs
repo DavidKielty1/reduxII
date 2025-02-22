@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using API.Models;
 using API.Models.CardProviders;
 using API.Models.Common;
+using API.Services.Interfaces;
 
 namespace API.Services
 {
@@ -13,18 +9,18 @@ namespace API.Services
     /// Manages communication with different credit card providers.
     /// Normalizes responses into a common format.
     /// </summary>
-    public class CardProviderService
+    public class CardProviderService : ICardProviderService
     {
         // Provider identifiers
         private const string CSCardsProvider = "CSCards";
         private const string ScoredCardsProvider = "ScoredCards";
         private const int ProviderTimeout = 3;  // seconds
 
-        private readonly ApiService _api;
+        private readonly IApiService _api;
         private readonly ILogger<CardProviderService> _logger;
         private readonly Dictionary<string, Func<CreditCardRequest, CancellationToken, Task<List<CreditCardRecommendation>>>> _providers;
 
-        public CardProviderService(ApiService api, ILogger<CardProviderService> logger)
+        public CardProviderService(IApiService api, ILogger<CardProviderService> logger)
         {
             _api = api;
             _logger = logger;

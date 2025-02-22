@@ -3,6 +3,7 @@ using StackExchange.Redis;
 using API.Models.Common;
 using Microsoft.Extensions.Options;
 using API.Settings;
+using API.Services.Interfaces;
 
 namespace API.Services;
 
@@ -10,7 +11,7 @@ namespace API.Services;
 /// Handles caching of credit card recommendations.
 /// Uses Redis for distributed caching with 10-minute expiration.
 /// </summary>
-public class RedisService
+public class RedisService : IRedisService
 {
     // Cache key format: creditcard:request:{name}:{score}:{salary}
     private const string KeyPrefix = "creditcard:request:";
