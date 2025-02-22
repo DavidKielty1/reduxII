@@ -4,7 +4,6 @@ using API.Settings;
 var builder = WebApplication.CreateBuilder(args);
 
 // Register Redis
-builder.Services.AddScoped<CreditCardService>();
 builder.Services.Configure<RedisSettings>(builder.Configuration.GetSection("Redis"));
 builder.Services.AddScoped<RedisService>();
 
@@ -25,6 +24,11 @@ builder.WebHost.UseUrls("http://localhost:5000");
 // Register HttpClient and ApiService
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<ApiService>();
+
+// Register services
+builder.Services.AddScoped<ICreditCardService, CreditCardService>();
+builder.Services.Configure<RedisSettings>(builder.Configuration.GetSection("Redis"));
+builder.Services.AddScoped<RedisService>();
 
 var app = builder.Build();
 

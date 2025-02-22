@@ -14,7 +14,7 @@ namespace API.Services
     /// Core business logic for credit card recommendations.
     /// Manages caching strategy and coordinates between different card providers.
     /// </summary>
-    public class CreditCardService
+    public class CreditCardService : ICreditCardService
     {
         private readonly RedisService _cache;
         private readonly CardProviderService _cardProvider;

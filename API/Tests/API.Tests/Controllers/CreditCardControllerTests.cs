@@ -1,0 +1,111 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Moq;
+using API.Controllers;
+using API.Models;
+using API.Models.Common;
+using API.Services;
+using Xunit;
+
+namespace API.Tests.Controllers
+{
+    public class CreditCardControllerTests
+    {
+        private readonly Mock<ICreditCardService> _serviceMock;
+        private readonly Mock<ILogger<CreditCardController>> _loggerMock;
+        private readonly CreditCardController _controller;
+
+        public CreditCardControllerTests()
+        {
+            _serviceMock = new Mock<ICreditCardService>();
+            _loggerMock = new Mock<ILogger<CreditCardController>>();
+            _controller = new CreditCardController(_serviceMock.Object, _loggerMock.Object);
+        }
+
+        [Fact]
+        public async Task ProcessCreditCard_ReturnsOk_WhenCardsFound()
+        {
+            // Arrange
+            var request = new CreditCardRequest { Name = "Test User", Score = 700 };
+            var cards = new List<CreditCardRecommendation>
+            {
+                new() { Name = "Test Card", Apr = 14.9M, CardScore = 90.0M, Provider = "CSCards" }
+            };
+
+            _serviceMock
+                .Setup(x => x.GetRecommendations(request))
+                .ReturnsAsync((cards, false));
+
+            // Act
+            var result = await _controller.ProcessCreditCard(request);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            var response = Assert.IsType<Anonymous<string, List<CreditCardRecommendation>>>(okResult.Value);
+            Assert.Equal("Fetched from APIs", response.message);
+            Assert.NotNull(response.cards);
+            Assert.Single(response.cards);
+            Assert.Equal("Test Card", response.cards[0].Name);
+        }
+
+        [Fact]
+        public async Task ProcessCreditCard_ReturnsBadRequest_WhenNoCardsFound()
+        {
+            // Arrange
+            var request = new CreditCardRequest { Name = "Test User", Score = 700 };
+
+            _serviceMock
+                .Setup(x => x.GetRecommendations(request))
+                .ReturnsAsync((new List<CreditCardRecommendation>(), false));
+
+            // Act
+            var result = await _controller.ProcessCreditCard(request);
+
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+            var response = Assert.IsType<Anonymous<string>>(badRequestResult.Value);
+            Assert.Equal("No credit card recommendations found", response.message);
+        }
+
+        [Fact]
+        public async Task ProcessCreditCard_ReturnsServerError_WhenExceptionOccurs()
+        {
+            // Arrange
+            var request = new CreditCardRequest { Name = "Test User", Score = 700 };
+
+            _serviceMock
+                .Setup(x => x.GetRecommendations(request))
+                .ThrowsAsync(new Exception("Test exception"));
+
+            // Act
+            var result = await _controller.ProcessCreditCard(request);
+
+            // Assert
+            var statusCodeResult = Assert.IsType<ObjectResult>(result);
+            Assert.Equal(500, statusCodeResult.StatusCode);
+            var response = Assert.IsType<Anonymous<string>>(statusCodeResult.Value);
+            Assert.Equal("Internal server error", response.message);
+
+            _loggerMock.Verify(
+                x => x.Log(
+                    LogLevel.Error,
+                    It.IsAny<EventId>(),
+                    It.Is<It.IsAnyType>((v, t) => true),
+                    It.IsAny<Exception>(),
+                    It.Is<Func<It.IsAnyType, Exception?, string>>((v, t) => true)),
+                Times.Once);
+        }
+
+        // Helper class to handle anonymous types in tests
+        private class Anonymous<T>
+        {
+            public T? message { get; set; }
+        }
+
+        private class Anonymous<T1, T2>
+        {
+            public T1? message { get; set; }
+            public T2? cards { get; set; }
+        }
+    }
+}

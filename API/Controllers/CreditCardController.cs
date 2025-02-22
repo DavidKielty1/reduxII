@@ -13,10 +13,10 @@ namespace API.Controllers
     [Route("api/credit-cards")]
     public class CreditCardController : ControllerBase
     {
-        private readonly CreditCardService _service;
+        private readonly ICreditCardService _service;
         private readonly ILogger<CreditCardController> _logger;
 
-        public CreditCardController(CreditCardService service, ILogger<CreditCardController> logger)
+        public CreditCardController(ICreditCardService service, ILogger<CreditCardController> logger)
         {
             _service = service;
             _logger = logger;

@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
     <RootNamespace>API.Tests</RootNamespace>
   </PropertyGroup>
 
@@ -25,7 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\API.csproj">
-      <Private>false</Private>
+      <Private>true</Private>
     </ProjectReference>
   </ItemGroup>
 
