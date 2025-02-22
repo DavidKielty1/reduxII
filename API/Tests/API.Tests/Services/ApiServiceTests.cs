@@ -116,6 +116,83 @@ public class ApiServiceTests
             _service.GetCSCards(request, CancellationToken.None));
     }
 
+    [Fact]
+    public async Task GetScoredCards_HandlesNonArrayResponse()
+    {
+        // Arrange
+        var request = new ScoredCardsRequest { Name = "Test", Score = 700, Salary = 30000 };
+        SetupMockHttpResponse("{\"cards\":{\"someOtherProperty\": \"value\"}}"); // Non-array in cards property
+
+        // Act & Assert
+        await Assert.ThrowsAsync<JsonException>(() =>
+            _service.GetScoredCards(request, CancellationToken.None));
+    }
+
+    [Fact]
+    public async Task GetCSCards_HandlesNullResponse()
+    {
+        // Arrange
+        var request = new CSCardsRequest { Name = "Test", CreditScore = 700 };
+        SetupMockHttpResponse("{\"cards\":null}"); // Wrap null in cards property
+
+        // Act & Assert
+        await Assert.ThrowsAsync<JsonException>(() =>
+            _service.GetCSCards(request, CancellationToken.None));
+    }
+
+    [Fact]
+    public async Task GetScoredCards_HandlesEndpointNotConfigured()
+    {
+        // Arrange
+        _mockConfig.Setup(x => x["SCOREDCARDS_ENDPOINT"]).Returns((string?)null);
+        var request = new ScoredCardsRequest { Name = "Test", Score = 700, Salary = 30000 };
+
+        // Act & Assert
+        await Assert.ThrowsAsync<InvalidOperationException>(() =>
+            _service.GetScoredCards(request, CancellationToken.None));
+    }
+
+    [Theory]
+    [InlineData(HttpStatusCode.NotFound)]
+    [InlineData(HttpStatusCode.BadRequest)]
+    [InlineData(HttpStatusCode.InternalServerError)]
+    public async Task GetCSCards_HandlesVariousHttpErrors(HttpStatusCode statusCode)
+    {
+        // Arrange
+        var request = new CSCardsRequest { Name = "Test", CreditScore = 700 };
+        _mockHttpHandler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>())
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = statusCode,
+                Content = new StringContent("Error message")
+            });
+
+        // Act & Assert
+        await Assert.ThrowsAsync<HttpRequestException>(() =>
+            _service.GetCSCards(request, CancellationToken.None));
+    }
+
+    [Fact]
+    public async Task GetCSCards_HandlesNetworkError()
+    {
+        // Arrange
+        var request = new CSCardsRequest { Name = "Test", CreditScore = 700 };
+        _mockHttpHandler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>())
+            .ThrowsAsync(new HttpRequestException("Network error"));
+
+        // Act & Assert
+        await Assert.ThrowsAsync<HttpRequestException>(() =>
+            _service.GetCSCards(request, CancellationToken.None));
+    }
+
     private void SetupMockHttpResponse(string content)
     {
         _mockHttpHandler.Protected()

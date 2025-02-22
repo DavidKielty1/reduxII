@@ -1,0 +1,41 @@
+name: .NET Build and Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore
+
+      - name: Test
+        run: dotnet test --no-build --verbosity normal --collect:"XPlat Code Coverage"
+
+      - name: Generate coverage report
+        uses: danielpalme/ReportGenerator-GitHub-Action@5.2.0
+        with:
+          reports: "**/coverage.cobertura.xml"
+          targetdir: "coveragereport"
+          reporttypes: "HtmlInline;Cobertura"
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: CoverageReport
+          path: coveragereport
