@@ -2,11 +2,11 @@
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API.csproj", "{SOME-GUID}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API.csproj", "{1367991A-F76E-4F99-9064-6928FFB829F8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{23F4A2A7-C1A7-4849-B5AA-0E0A333A6D85}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2A86951E-451B-4929-BB53-3A388D67E57A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.Tests", "Tests\API.Tests\Api.Tests.csproj", "{83330EB2-AFEF-442C-94F5-CBC8F4D954AB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API.Tests", "Tests\API.Tests\API.Tests.csproj", "{A02DA4AA-D2FA-461A-AF32-0236B5945B2A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,12 +17,16 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{83330EB2-AFEF-442C-94F5-CBC8F4D954AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{83330EB2-AFEF-442C-94F5-CBC8F4D954AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{83330EB2-AFEF-442C-94F5-CBC8F4D954AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{83330EB2-AFEF-442C-94F5-CBC8F4D954AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1367991A-F76E-4F99-9064-6928FFB829F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1367991A-F76E-4F99-9064-6928FFB829F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1367991A-F76E-4F99-9064-6928FFB829F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1367991A-F76E-4F99-9064-6928FFB829F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A02DA4AA-D2FA-461A-AF32-0236B5945B2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A02DA4AA-D2FA-461A-AF32-0236B5945B2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A02DA4AA-D2FA-461A-AF32-0236B5945B2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A02DA4AA-D2FA-461A-AF32-0236B5945B2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{83330EB2-AFEF-442C-94F5-CBC8F4D954AB} = {23F4A2A7-C1A7-4849-B5AA-0E0A333A6D85}
+		{A02DA4AA-D2FA-461A-AF32-0236B5945B2A} = {2A86951E-451B-4929-BB53-3A388D67E57A}
 	EndGlobalSection
 EndGlobal
