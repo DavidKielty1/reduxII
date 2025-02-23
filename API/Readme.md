@@ -1,8 +1,42 @@
 # Credit Card Recommendation API
 
-[![.NET Build and Test](https://github.com/{your-username}/{repo-name}/actions/workflows/dotnet.yml/badge.svg)](https://github.com/{your-username}/{repo-name}/actions/workflows/dotnet.yml)
+[![.NET Build and Test](https://github.com/DavidKielty1/reduxII/actions/workflows/dotnet.yml/badge.svg)](https://github.com/DavidKielty1/reduxII/actions/workflows/dotnet.yml)
 
 API for retrieving and caching credit card recommendations from multiple providers.
+
+## Design
+
+#### Application Overview
+
+This API provides credit card recommendations by aggregating data from multiple providers, normalizing scores, and caching results for performance optimization.
+
+#### Service Breakdown
+
+- CreditCardController
+  Handles HTTP requests for credit card recommendations.
+  Validates input, calls the service layer, and returns structured responses.
+
+- CreditCardService
+  Manages caching and orchestrates recommendation retrieval.
+  Fetches fresh data if cache is unavailable and processes scoring logic.
+
+- CardProviderService
+  Fetches data from multiple credit card providers in parallel.
+  Normalizes different provider response formats into a common structure.
+
+- ApiService
+  Handles HTTP communication with external credit card provider APIs.
+  Ensures error handling, request serialization, and response deserialization.
+
+- CardScoreCalculator
+  Normalizes credit card eligibility scores from different providers.
+  Calculates a weighted sorting score based on eligibility and APR.
+  .
+- RedisService  
+  Implements caching for faster response times and reduced API calls.
+  Stores and retrieves credit card recommendations using Redis.
+
+This structure ensures scalability, maintainability, and efficiency while delivering optimized credit card recommendations.
 
 ## Features
 
@@ -11,6 +45,10 @@ API for retrieving and caching credit card recommendations from multiple provide
 - Normalized scoring system
 - Validation and error handling
 - Test coverage requirements
+
+## Deployment
+
+This microservice can be Dockerized with a multi-stage Dockerfile for optimized image size. It can be deployed in Kubernetes using a Deployment with multiple replicas, an HPA (Horizontal Pod Autoscaler) for scaling, and a Service for stable networking. Configurations like API endpoints and Redis credentials are managed via ConfigMaps and Secrets. Redis can be deployed as a pod or a managed service, ensuring scalability, fault tolerance, and efficient load balancing.
 
 ## Testing
 
